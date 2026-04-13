@@ -5,3 +5,4 @@
 *.keystore
 .env
 .env.*
+.claude/
