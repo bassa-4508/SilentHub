@@ -27,6 +27,14 @@ class SilentRepository(private val dataSource: JsonDataSource) {
         dataSource.save(updated)
     }
 
+    fun deleteNotification(id: String) {
+        val current = dataSource.load()
+        val updated = current.copy(
+            notifications = current.notifications.filterNot { it.id == id }
+        )
+        dataSource.save(updated)
+    }
+
     fun updateAll(data: DataContainer) {
         dataSource.save(data)
     }

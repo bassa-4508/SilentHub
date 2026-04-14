@@ -19,3 +19,6 @@ val SurfaceDark = Color(0xFF1C1C1E)
 val OnSurfaceDark = Color(0xFFFFFFFF)
 val SurfaceVariantDark = Color(0xFF2C2C2E)
 val OnSurfaceVariantDark = Color(0x99FFFFFF)
+
+val NotificationBackground = Color(0xFF000000)
+val NotificationForeground = Color(0xFFFFFFFF)
