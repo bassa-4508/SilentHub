@@ -15,6 +15,7 @@ import com.akaokatubasa.silenthub.notification.NotificationChannels
 import com.akaokatubasa.silenthub.ui.navigation.SilentHubBottomBar
 import com.akaokatubasa.silenthub.ui.navigation.SilentHubNavHost
 import com.akaokatubasa.silenthub.ui.screens.contacts.ContactsViewModelFactory
+import com.akaokatubasa.silenthub.ui.screens.settings.SettingsViewModelFactory
 import com.akaokatubasa.silenthub.ui.screens.time.TimeViewModelFactory
 import com.akaokatubasa.silenthub.ui.theme.SilentHubTheme
 
@@ -27,18 +28,27 @@ class MainActivity : ComponentActivity() {
         NotificationChannels.ensureCreated(applicationContext)
 
         val container = AppContainer(applicationContext)
-        val contactsFactory = ContactsViewModelFactory(container.getContactsUseCase)
+        val contactsFactory = ContactsViewModelFactory(
+            getContactsUseCase = container.getContactsUseCase,
+            addContactUseCase = container.addContactUseCase,
+            deleteContactUseCase = container.deleteContactUseCase
+        )
         val timeFactory = TimeViewModelFactory(
             getNotificationsUseCase = container.getNotificationsUseCase,
             addNotificationUseCase = container.addNotificationUseCase,
-            deleteNotificationUseCase = container.deleteNotificationUseCase,
+            cancelNotificationUseCase = container.cancelNotificationUseCase,
             scheduleNotificationUseCase = container.scheduleNotificationUseCase
+        )
+        val settingsFactory = SettingsViewModelFactory(
+            exportDataUseCase = container.exportDataUseCase,
+            importDataUseCase = container.importDataUseCase
         )
 
         setContent {
             SilentHubApp(
                 contactsViewModelFactory = contactsFactory,
-                timeViewModelFactory = timeFactory
+                timeViewModelFactory = timeFactory,
+                settingsViewModelFactory = settingsFactory
             )
         }
     }
@@ -47,7 +57,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 private fun SilentHubApp(
     contactsViewModelFactory: ContactsViewModelFactory,
-    timeViewModelFactory: TimeViewModelFactory
+    timeViewModelFactory: TimeViewModelFactory,
+    settingsViewModelFactory: SettingsViewModelFactory
 ) {
     SilentHubTheme {
         val navController = rememberNavController()
@@ -59,6 +70,7 @@ private fun SilentHubApp(
                 navController = navController,
                 contactsViewModelFactory = contactsViewModelFactory,
                 timeViewModelFactory = timeViewModelFactory,
+                settingsViewModelFactory = settingsViewModelFactory,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)

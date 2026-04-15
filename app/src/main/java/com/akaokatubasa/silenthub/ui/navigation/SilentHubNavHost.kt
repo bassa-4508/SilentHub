@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.akaokatubasa.silenthub.ui.screens.contacts.ContactsScreen
 import com.akaokatubasa.silenthub.ui.screens.contacts.ContactsViewModelFactory
 import com.akaokatubasa.silenthub.ui.screens.settings.SettingsScreen
+import com.akaokatubasa.silenthub.ui.screens.settings.SettingsViewModelFactory
 import com.akaokatubasa.silenthub.ui.screens.time.TimeScreen
 import com.akaokatubasa.silenthub.ui.screens.time.TimeViewModelFactory
 
@@ -16,6 +17,7 @@ fun SilentHubNavHost(
     navController: NavHostController,
     contactsViewModelFactory: ContactsViewModelFactory,
     timeViewModelFactory: TimeViewModelFactory,
+    settingsViewModelFactory: SettingsViewModelFactory,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -30,7 +32,7 @@ fun SilentHubNavHost(
             ContactsScreen(factory = contactsViewModelFactory)
         }
         composable(Destination.Settings.route) {
-            SettingsScreen()
+            SettingsScreen(factory = settingsViewModelFactory)
         }
     }
 }

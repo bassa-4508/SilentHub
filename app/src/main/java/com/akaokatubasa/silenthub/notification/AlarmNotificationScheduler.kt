@@ -28,10 +28,14 @@ class AlarmNotificationScheduler(private val context: Context) : NotificationSch
         }
     }
 
-    override fun cancel(item: NotificationItem) {
-        val pendingIntent = buildPendingIntent(item)
-        alarmManager.cancel(pendingIntent)
-        pendingIntent.cancel()
+    override fun cancel(id: String) {
+        val pendingIntent = buildCancelPendingIntent(id)
+        try {
+            alarmManager.cancel(pendingIntent)
+            pendingIntent.cancel()
+        } catch (t: Throwable) {
+            // claude.md §9 — never crash on cancel
+        }
     }
 
     private fun buildPendingIntent(item: NotificationItem): PendingIntent {
@@ -42,6 +46,18 @@ class AlarmNotificationScheduler(private val context: Context) : NotificationSch
         return PendingIntent.getBroadcast(
             context,
             item.id.hashCode(),
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+    }
+
+    // Intent.filterEquals ignores extras — component + requestCode are enough
+    // to match the PendingIntent registered by schedule().
+    private fun buildCancelPendingIntent(id: String): PendingIntent {
+        val intent = Intent(context, NotificationAlarmReceiver::class.java)
+        return PendingIntent.getBroadcast(
+            context,
+            id.hashCode(),
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )

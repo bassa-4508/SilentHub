@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.akaokatubasa.silenthub.data.model.NotificationItem
 import com.akaokatubasa.silenthub.domain.usecase.AddNotificationUseCase
-import com.akaokatubasa.silenthub.domain.usecase.DeleteNotificationUseCase
+import com.akaokatubasa.silenthub.domain.usecase.CancelNotificationUseCase
 import com.akaokatubasa.silenthub.domain.usecase.GetNotificationsUseCase
 import com.akaokatubasa.silenthub.domain.usecase.ScheduleNotificationUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +16,7 @@ import java.util.UUID
 class TimeViewModel(
     private val getNotificationsUseCase: GetNotificationsUseCase,
     private val addNotificationUseCase: AddNotificationUseCase,
-    private val deleteNotificationUseCase: DeleteNotificationUseCase,
+    private val cancelNotificationUseCase: CancelNotificationUseCase,
     private val scheduleNotificationUseCase: ScheduleNotificationUseCase
 ) : ViewModel() {
 
@@ -42,7 +42,7 @@ class TimeViewModel(
 
     fun delete(id: String) {
         viewModelScope.launch {
-            deleteNotificationUseCase(id)
+            cancelNotificationUseCase(id)
             reload()
         }
     }

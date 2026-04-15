@@ -19,7 +19,7 @@ class JsonDataSource(context: Context) {
         return try {
             if (!file.exists()) {
                 val empty = DataContainer()
-                writeToFile(empty)
+                save(empty)
                 return empty
             }
             val text = file.readText()
@@ -35,15 +35,18 @@ class JsonDataSource(context: Context) {
 
     fun save(data: DataContainer) {
         try {
-            writeToFile(data)
+            writeRaw(json.encodeToString(DataContainer.serializer(), data))
         } catch (t: Throwable) {
             // swallow: persistence failures must not crash the app
         }
     }
 
-    private fun writeToFile(data: DataContainer) {
-        val text = json.encodeToString(DataContainer.serializer(), data)
-        file.writeText(text)
+    fun writeRaw(rawJson: String) {
+        try {
+            file.writeText(rawJson)
+        } catch (t: Throwable) {
+            // claude.md §9
+        }
     }
 
     companion object {

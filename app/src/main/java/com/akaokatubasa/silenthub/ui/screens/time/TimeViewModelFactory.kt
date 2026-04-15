@@ -3,14 +3,14 @@ package com.akaokatubasa.silenthub.ui.screens.time
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.akaokatubasa.silenthub.domain.usecase.AddNotificationUseCase
-import com.akaokatubasa.silenthub.domain.usecase.DeleteNotificationUseCase
+import com.akaokatubasa.silenthub.domain.usecase.CancelNotificationUseCase
 import com.akaokatubasa.silenthub.domain.usecase.GetNotificationsUseCase
 import com.akaokatubasa.silenthub.domain.usecase.ScheduleNotificationUseCase
 
 class TimeViewModelFactory(
     private val getNotificationsUseCase: GetNotificationsUseCase,
     private val addNotificationUseCase: AddNotificationUseCase,
-    private val deleteNotificationUseCase: DeleteNotificationUseCase,
+    private val cancelNotificationUseCase: CancelNotificationUseCase,
     private val scheduleNotificationUseCase: ScheduleNotificationUseCase
 ) : ViewModelProvider.Factory {
 
@@ -19,7 +19,7 @@ class TimeViewModelFactory(
         return TimeViewModel(
             getNotificationsUseCase = getNotificationsUseCase,
             addNotificationUseCase = addNotificationUseCase,
-            deleteNotificationUseCase = deleteNotificationUseCase,
+            cancelNotificationUseCase = cancelNotificationUseCase,
             scheduleNotificationUseCase = scheduleNotificationUseCase
         ) as T
     }

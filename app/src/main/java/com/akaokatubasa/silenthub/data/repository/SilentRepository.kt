@@ -17,6 +17,14 @@ class SilentRepository(private val dataSource: JsonDataSource) {
         dataSource.save(updated)
     }
 
+    fun deleteContact(id: String) {
+        val current = dataSource.load()
+        val updated = current.copy(
+            contacts = current.contacts.filterNot { it.id == id }
+        )
+        dataSource.save(updated)
+    }
+
     fun getNotifications(): List<NotificationItem> {
         return dataSource.load().notifications
     }
@@ -35,7 +43,11 @@ class SilentRepository(private val dataSource: JsonDataSource) {
         dataSource.save(updated)
     }
 
-    fun updateAll(data: DataContainer) {
+    fun getRaw(): DataContainer {
+        return dataSource.load()
+    }
+
+    fun replaceAll(data: DataContainer) {
         dataSource.save(data)
     }
 }
